@@ -83,6 +83,9 @@ def get_commit_data(repo_path, max_commits=None):
         git_diff_command = ["git", "show", "--pretty=format:\"\"", "--patch", commit_hash]
         diff_output = run_git_command(git_diff_command, cwd_path=repo_path)
 
+        if len(diff_output) > 5000:  # 如果 diff 输出超过 32KB，跳过
+            continue
+
         # if diff_output is not None: # diff_output 可能是空字符串（例如，空提交或仅修改消息）
         dataset.append({
             "diff": diff_output,
